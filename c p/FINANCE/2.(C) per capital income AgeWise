@@ -1,0 +1,21 @@
+a = load '/user/cloudera/rohit/age.dat' using PigStorage('\t') as (age:int,cat:chararray);
+
+b = load '/user/cloudera/rohit/census' using PigStorage(',') as                     (age:int,education:chararray,ms:chararray,gender:chararray,taxfiler:chararray,income:double,parents:chararray,cob:chararray,citizenship:chararray,ww:int);
+
+c = foreach a generate age,cat;
+
+d = foreach b generate age,income;
+
+e = join c by age, d by age;
+
+f = foreach e generate cat,income;
+
+g = group f by cat;
+
+h = foreach g generate group,SUM(f.income)/COUNT(f.income) as pci;
+
+dump h;
+
+
+
+

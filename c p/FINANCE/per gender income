@@ -1,0 +1,5 @@
+a = load '/user/cloudera/rohit/census' using PigStorage(',') as (age:int,education:chararray,ms:chararray,gender:chararray,texfiller:chararray,income:double,parents:chararray,cob:chararray,citizenship:chararray,weeks:int);
+b = foreach a generate income,gender;
+c = group b by gender;
+d = foreach c generate group, SUM(b.income) /COUNT(b.income) as pci; 
+dump d;
